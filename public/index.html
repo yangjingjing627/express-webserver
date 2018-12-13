@@ -25,6 +25,22 @@
                 {{item}}
             </span>
         </div>
+        <div>===================================</div>
+        <form action="">
+            <input type="button" value="获取用户信息" @click="userInfo">
+            <div>
+                用户姓名：
+                <input type="text" v-model="username">
+            </div>
+            <div>
+                用户身高：
+                <input type="text" v-model="userheight">
+            </div>
+            <div>
+                用户ID：
+                <input type="text" v-model="userid">
+            </div>
+        </form>
     </div>
 
     <!-- js 代码区域 -->
@@ -33,7 +49,10 @@
             el: '#app',
             data: {
                 phoneNum: '12345',
-                faceList: ["20元", "30元", "50元"]
+                faceList: ["20元", "30元", "50元"],
+                username: '',
+                userheight: '',
+                userid: ''
             },
             methods: {
                 //获取到城市信息
@@ -53,6 +72,11 @@
                         city
                     })
                 },
+                getUser() {
+                    return axios.post('/user', {
+
+                    })
+                },
                 // 点击确定按钮时，获取面值列表
                 async getFaceResult() {
                     let testVal = await this.getTest()
@@ -68,6 +92,14 @@
                         }
                     } catch (err) {
                         console.log(err);
+                    }
+                },
+                async userInfo() {
+                    let res = await this.getUser()
+                    if (res && res.data.success) {
+                        this.username = res.data.obj.name
+                        this.userheight = res.data.obj.height
+                        this.userid = res.data.obj.id
                     }
                 }
             }
