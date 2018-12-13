@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Async/await</title>
+    <!-- CDN 引入vue 和 axios -->
+    <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+</head>
+
+<body>
+    <div id="app">
+
+        <!-- 输入框区域 -->
+        <div style="height:50px">
+            <input type="text" placeholder="请输入电话号码" v-model="phoneNum">
+            <button @click="getFaceResult">确定</button>
+        </div>
+
+        <!-- 充值面值 显示区域 -->
+        <div>
+            充值面值：
+            <span v-for="item in faceList" :key='item'>
+                {{item}}
+            </span>
+        </div>
+    </div>
+
+    <!-- js 代码区域 -->
+    <script>
+        new Vue({
+            el: '#app',
+            data: {
+                phoneNum: '12345',
+                faceList: ["20元", "30元", "50元"]
+            },
+            methods: {
+                //获取到城市信息
+                getTest() {
+                    return axios.get('http://localhost:8001/')
+                },
+                //获取到城市信息
+                getLocation(phoneNum) {
+                    return axios.post('phoneLocation', {
+                        phoneNum
+                    })
+                },
+                // 获取面值
+                getFaceList(province, city) {
+                    return axios.post('/faceList', {
+                        province,
+                        city
+                    })
+                },
+                // 点击确定按钮时，获取面值列表
+                async getFaceResult() {
+                    let testVal = await this.getTest()
+                    try {
+                        let location = await this.getLocation(this.phoneNum)
+                        if (location.data.success) {
+                            let province = location.data.obj.province;
+                            let city = location.data.obj.city;
+                            let result = await this.getFaceList(province, city)
+                            if (result.status === 200 && result.data.success) {
+                                this.faceList = result.data.obj
+                            }
+                        }
+                    } catch (err) {
+                        console.log(err);
+                    }
+                }
+            }
+        })
+    </script>
+</body>
+
+</html>
