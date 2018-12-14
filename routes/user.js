@@ -7,8 +7,8 @@ router.get('/user', function (req, res) {
     //                               {username: 'Wilson Zhong'},
     //                               {username: 'Zhong Wei'}] 
     //           });
-    router.get('/:name', function (req, res) {
-        res.send('hello, dfdjfdf' + req.params.name)
+    router.get('/user/:name', function (req, res) {
+        res.send('hello, ' + req.params.name)
     })
 });
 

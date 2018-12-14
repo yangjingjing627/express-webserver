@@ -25,5 +25,3 @@ app.use('/user', userRouter)
 app.listen(8004, ()=>{
     console.log('server started on port 8004')
 })
-
-// module.exports = app
