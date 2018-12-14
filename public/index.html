@@ -25,6 +25,8 @@
                 {{item}}
             </span>
         </div>
+        <!-- 充值面值 显示区域 -->
+        <div>价格：{{ price }}</div>
         <div>===================================</div>
         <form action="">
             <input type="button" value="获取用户信息" @click="userInfo">
@@ -52,7 +54,8 @@
                 faceList: ["20元", "30元", "50元"],
                 username: '',
                 userheight: '',
-                userid: ''
+                userid: '',
+                price: 10
             },
             methods: {
                 //获取到城市信息
@@ -72,6 +75,11 @@
                         city
                     })
                 },
+                getPrice(price) {
+                    return axios.patch('/faceList', {
+                        price
+                    })
+                },
                 getUser() {
                     return axios.post('/user', {
 
@@ -88,6 +96,10 @@
                             let result = await this.getFaceList(province, city)
                             if (result.status === 200 && result.data.success) {
                                 this.faceList = result.data.obj
+                                let result_1 = await this.getPrice(this.price)
+                                if (result_1.status === 200 && result_1.data.success) {
+                                    this.price = result_1.data.obj.price
+                                }
                             }
                         }
                     } catch (err) {

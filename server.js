@@ -57,7 +57,22 @@ app.post('/phoneLocation',(req,res)=>{
           )
       }, 1000);
   })
+  app.patch('/faceList', (req, res) => {    //  patch put均可以实现
+    setTimeout(() => {
+        res.json(
+            {
+                success: true,
+                obj: {
+                    province: '广东',
+                    city: '深圳',
+                    price: 11
+                }
+            }
+            
+        )
+    }, 1000);
+})
   
 app.listen(8001, ()=>{
-    console.log('server start')
+    console.log('server started on port 8001')
 })
